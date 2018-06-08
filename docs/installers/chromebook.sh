@@ -49,7 +49,7 @@ cd ~/Downloads;
 
 echo "Great! Let's get to it then.";
 echo "Downloading crouton...";
-wget https://goo.gl/fd3zc -O crouton;
+curl -Ls https://goo.gl/fd3zc > crouton;
 echo "crouton downloaded.";
 
 echo "Detecting architecture...";
