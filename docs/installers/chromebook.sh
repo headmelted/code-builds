@@ -1,5 +1,17 @@
 #!/bin/sh
 
+# Some initial checks
+# TODO: Remove this once aarch64 is supported
+MACHINE_MTYPE="$(uname -m)";
+if [ "$ARCH" = "armv7l" ]; then 
+echo "
+aarch64 currently disabled. 
+THIS IS BEING WORKED ON, APOLOGIES FOR THE INCONVENIENCE, 
+PLEASE CHECK https://code.headmelted.com FOR UPDATES
+";
+exit 1;
+fi;
+
 clear;
 echo "
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
