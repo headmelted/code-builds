@@ -57,7 +57,7 @@ ARCH="${MACHINE_MTYPE}";
 REPOSITORY_NAME="headmelted";
 
 if [ "$ARCHIE_ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$ARCHIE_ARCH" = "amd64" ] || [ "$ARCHIE_ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
+if [ "$ARCHIE_ARCH" = "amd64" ] || [ "$ARCHIE_ARCH" = "i386" ]; then REPOSITORY_NAME="Microsoft"; fi;
 
 echo "Architecture detected as $ARCHIE_ARCH...";
 
