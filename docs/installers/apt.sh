@@ -25,7 +25,7 @@ else
 fi;
 
 echo "Retrieving GPG key [${REPO_VENDOR}] ($gpg_key)...";
-curl $gpg_key | gpg --dearmor > /etc/apt/trusted.gpg.d/${REPO_VENDOR}_vscode.gpg;
+curl -sL $gpg_key | gpg --dearmor > /etc/apt/trusted.gpg.d/${REPO_VENDOR}_vscode.gpg;
 
 echo "Removing any previous entry to headmelted repository";
 rm -rf /etc/apt/sources.list.d/headmelted_codebuilds.list;
