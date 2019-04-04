@@ -10,7 +10,7 @@ image_url: images/code.png
 <p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).  You can find details below of the architectures, operating systems and packaging formats these builds support.</p>
 <dl>
   <dt><i class="fa fa-microchip"></i>&nbsp;Architectures</dt>
-  <dd>amd64, armhf<!--, arm64 --></dd>
+  <dd>amd64, i386, armhf, arm64</dd>
   <dt><i class="fa fa-archive"></i>&nbsp;Packages</dt>
   <dd>DEB, RPM</dd>
   <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
@@ -45,7 +45,12 @@ image_url: images/code.png
 <h1 id="chromeos-install-scripts"><i class="fa fa-chrome"></i>&nbsp;Chrome OS</h1>
 <!-- <h2><strong><i class="fa fa-android"></i>&nbsp;Android method</strong></h2>
 <p>If your Chrome OS device supports Android, you now have the option of following <a href="#android-install-scripts">the Android instructions</a> (<i>which allows you to avoid entering Developer Mode or installing Crouton</i>).</p>
---><h2><strong><i class="fa fa-cube"></i>&nbsp;Crouton method</strong></h2>
+-->
+  
+  <h2><strong><i class="fa fa-cube"></i>&nbsp;Native method</strong></h2>
+<p>If your Chromebook supports the Linux Apps feature, the best way to install the application is to download the corresponding deb package for your architecture from <a href="https://github.com/headmelted/codebuilds/releases">the Releases page</a>.</p>
+  
+  <h2><strong><i class="fa fa-cube"></i>&nbsp;Crouton method</strong></h2>
 <p>The instructions below require you to put your device into Developer Mode.  <strong>There are important security implications to doing this, so please consider the ramifications carefully before deciding to do so.  Please click <a href="http://www.chromium.org/chromium-os/chromiumos-design-docs/developer-mode">here</a> for more details.</strong></p>
 <ol>
   <li>Put your Chromebook into <a href="https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device">developer mode</a>.</li>
@@ -108,7 +113,7 @@ for updates, you can get the latest version of the package for your system below
 <dd>These are automated builds of the open-source edition of Microsoft's Visual Studio Code.</dd>
 
 <dt>How does this work?</dt>
-<dd>The latest code is pulled on a nightly basis from Microsoft's <a href="https://github.com/Microsoft/vscode">official repository</a>. If there are updates, the code is built, packaged and deployed.</dd>
+<dd>The latest code is pulled on a rolling basis from Microsoft's <a href="https://github.com/Microsoft/vscode">official repository</a>. If there are updates, the code is built, packaged and deployed.</dd>
 
 <dt>Which devices are supported?</dt>
 <dd>Please refer to the <a href="#platforms">Platforms</a> section.</dd>

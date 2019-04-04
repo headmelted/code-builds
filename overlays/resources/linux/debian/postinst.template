@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See License.txt in the project root for license information.
+
+# Symlink bin command to /usr/bin
+rm -f /usr/bin/@@NAME@@
+ln -s /usr/share/@@NAME@@/bin/@@NAME@@ /usr/bin/@@NAME@@
+
+# Register code in the alternatives system
+# Priority of 0 should never make code the default editor in auto mode as most
+# developers would prefer a terminal editor as the default.
+update-alternatives --install /usr/bin/editor editor /usr/bin/@@NAME@@ 0
+
+# Install the desktop entry
+if hash desktop-file-install 2>/dev/null; then
+	desktop-file-install /usr/share/applications/@@NAME@@.desktop
+fi
+
+code_executable_name="code-oss";
+
+if [ "@@NAME@@" == "${code_executable_name}" ]; then
+
+	# Register apt repository
+	get_apt_config_value() {
+		echo $(apt-config dump | grep "$1 " | sed -e "s/$1 \"//" -e "s/\";$//")
+	}
+	
+    REPO_VENDOR="headmelted";
+
+	APT_DIR=$(get_apt_config_value Dir)
+	APT_ETC=$APT_DIR$(get_apt_config_value Dir::Etc)
+	APT_SOURCE_PARTS=$APT_ETC/$(get_apt_config_value Dir::Etc::sourceparts)
+	CODE_SOURCE_PART=$APT_SOURCE_PARTS/${REPO_VENDOR}_vscode.list
+
+	APT_TRUSTED_PARTS=$APT_ETC/$(get_apt_config_value Dir::Etc::trustedparts)
+    
+	CODE_TRUSTED_PART=$APT_TRUSTED_PARTS/${REPO_VENDOR}_vscode.gpg
+	
+    gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
+    repo_name="stretch";
+    repo_entry="deb https://packagecloud.io/headmelted/codebuilds/debian/ ${repo_name} main";
+
+    echo "Retrieving GPG key [${REPO_VENDOR}] ($gpg_key)...";
+    curl $gpg_key | gpg --dearmor > ${CODE_TRUSTED_PART};
+
+    echo "Removing any previous entry to headmelted repository";
+    rm -rf /etc/apt/sources.list.d/headmelted_codebuilds.list;
+    rm -rf /etc/apt/sources.list.d/codebuilds.list;
+  
+    echo "Installing [${REPO_VENDOR}] repository...";
+    echo "${repo_entry}" > ${CODE_SOURCE_PART};
+  
+    echo "Updating APT cache..."
+    apt-get update -yq;
+    echo "Done!"
+	
+fi

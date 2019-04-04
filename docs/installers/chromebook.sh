@@ -1,6 +1,5 @@
 #!/bin/sh
 
-clear;
 echo "
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                           _   __ _             _             ___          _
@@ -49,7 +48,7 @@ cd ~/Downloads;
 
 echo "Great! Let's get to it then.";
 echo "Downloading crouton...";
-curl -Ls https://goo.gl/fd3zc > crouton;
+curl https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton -o crouton;
 echo "crouton downloaded.";
 
 echo "Detecting architecture...";
@@ -57,10 +56,10 @@ MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPOSITORY_NAME="headmelted";
 
-if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
+if [ "$ARCHIE_ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
+if [ "$ARCHIE_ARCH" = "amd64" ] || [ "$ARCHIE_ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
 
-echo "Architecture detected as ${ARCH}...";
+echo "Architecture detected as $ARCHIE_ARCH...";
 
 echo "Preparing xenial chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;
@@ -119,6 +118,4 @@ To run Visual Studio Code from now on perform the following steps:
 3) Type (without the quotes!) \"code\" and press return.
 
 ";
-
-exit;
 

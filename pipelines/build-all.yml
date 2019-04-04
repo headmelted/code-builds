@@ -1,0 +1,26 @@
+resources:
+- repo: self
+
+trigger:
+- master
+
+jobs:
+- template: build-for-arch.yml
+  parameters:
+    arch: amd64
+- template: build-for-arch.yml
+  parameters:
+    arch: i386
+- template: build-for-arch.yml
+  parameters:
+    arch: arm64
+- template: build-for-arch.yml
+  parameters:
+    arch: armhf
+    
+        
+#='set -e;echo "Removing old nvm for user if it exists";rm -rf ~/.nvm;echo "Cloning nvm for user";git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm;echo "Setting current owner as owner of ~/.nvm";chown ${USER:=$(/usr/bin/id -run)}:$USER -R ~/.nvm;echo "Running NVM script";source ~/.nvm/nvm.sh;echo "Setting up NVM";nvm install 8.9.4;nvm use 8.9.4;nvm alias default 8.9.4;echo "Setting python binding";npm config set python `which python`;echo "Installing npm dependencies";npm install -g gulp yarn;echo "Installing yarn dependencies for [$npm_config_target_arch]";yarn install;echo "Compiling VS Code for [$npm_config_target_arch]";yarn run gulp vscode-linux-$npm_config_target_arch-min;'     
+#- job: linux_arm32hf
+#  displayName: 'Linux ARM 32-bit, hardware floating-point'
+#  steps:
+#  - template: devops-archie.yml
