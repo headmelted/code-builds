@@ -4,9 +4,27 @@ echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPO_VENDOR="headmelted";
+DEPENDENCIES=""
 
-echo "Ensuring curl is installed";
-apt-get install -y curl;
+echo "Updating APT cache..."
+if apt-get update -yq; then
+  echo "Update complete.";
+else
+  echo "Update failed.";
+  exit 1;
+fi;
+
+#test what dependencies need to be installed
+test -f "/usr/share/doc/apt-transport-https/copyright" || DEPENDENCIES="${DEPENDENCIES} apt-transport-https"
+sudo command -v update-ca-certificates >/dev/null 2>&1 || DEPENDENCIES="${DEPENDENCIES} ca-certificates"
+command -v curl >/dev/null 2>&1 || DEPENDENCIES="${DEPENDENCIES} curl"
+command -v git >/dev/null 2>&1 || DEPENDENCIES="${DEPENDENCIES} git"
+command -v gpg-agent >/dev/null 2>&1 || DEPENDENCIES="${DEPENDENCIES} gnupg-agent"
+
+if [ "X${DEPENDENCIES}" != "X" ]; then
+  echo "Installing dependencies: ${DEPENDENCIES}" >&2
+  apt-get -f -qq -y install "${DEPENDENCIES}" >/dev/null 2>&1
+fi
 
 if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then REPO_VENDOR="microsoft"; fi;
 
@@ -34,7 +52,7 @@ rm -rf /etc/apt/sources.list.d/codebuilds.list;
 echo "Installing [${REPO_VENDOR}] repository...";
 echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
   
-echo "Updating APT cache..."
+echo "Refreshing APT cache again..."
 if apt-get update -yq; then
   echo "Repository install complete.";
 else
@@ -47,14 +65,6 @@ if apt-get install -t ${repo_name} -y ${code_executable_name}; then
   echo "Visual Studio Code install complete.";
 else
   echo "Visual Studio Code install failed.";
-  exit 1;
-fi;
-
-echo "Installing git...";
-if apt-get install -y git; then
-  echo "git install complete.";
-else
-  echo "git install failed.";
   exit 1;
 fi;
 
@@ -75,4 +85,3 @@ You can start code at any time by calling \"${code_executable_name}\" within a t
 A shortcut should also now be available in your desktop menus (depending on your distribution).
 
 ";
-
