@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#check for root priv
+if [ "$(id -u)" != "0" ]; then
+	echo "This installation script must be executed as root (i.e. run via sudo). Exiting" >&2
+	exit 1
+fi
+
 echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
