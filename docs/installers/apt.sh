@@ -35,10 +35,7 @@ echo "Installing [${REPO_VENDOR}] repository...";
 echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
   
 echo "Updating APT cache..."
-apt-get update -yq;
-echo "Done!"
-
-if [ $? -eq 0 ]; then
+if apt-get update -yq; then
   echo "Repository install complete.";
 else
   echo "Repository install failed.";
@@ -46,10 +43,7 @@ else
 fi;
 
 echo "Installing Visual Studio Code from [${repo_name}]...";
-apt-get install -t ${repo_name} -y ${code_executable_name};
-#apt-get install -t ${repo_name} -y --allow-unauthenticated ${code_executable_name};
-
-if [ $? -eq 0 ]; then
+if apt-get install -t ${repo_name} -y ${code_executable_name}; then
   echo "Visual Studio Code install complete.";
 else
   echo "Visual Studio Code install failed.";
@@ -57,9 +51,7 @@ else
 fi;
 
 echo "Installing git...";
-apt-get install -y git;
-
-if [ $? -eq 0 ]; then
+if apt-get install -y git; then
   echo "git install complete.";
 else
   echo "git install failed.";
@@ -67,9 +59,7 @@ else
 fi;
 
 echo "Installing any dependencies that may have been missed...";
-apt-get install -y -f;
-
-if [ $? -eq 0 ]; then
+if apt-get install -y -f; then
   echo "Missed dependency install complete.";
 else
   echo "Missed dependency install failed.";
