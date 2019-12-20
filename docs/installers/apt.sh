@@ -82,7 +82,6 @@ else
 fi
 
 echo "
-
 Installation complete!
 
 You can start code at any time by calling \"${code_executable_name}\" within a terminal.
