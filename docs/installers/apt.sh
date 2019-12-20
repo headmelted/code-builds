@@ -6,14 +6,17 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPO_VENDOR="headmelted";
 DEPENDENCIES=""
 
+if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then REPO_VENDOR="microsoft"; fi;
+
+echo "Architecture detected as $ARCH...";
+
 echo "Updating APT cache..."
-if apt-get update -yq; then
+if apt-get -qq update; then
   echo "Update complete.";
 else
   echo "Update failed.";
@@ -31,10 +34,6 @@ if [ "X${DEPENDENCIES}" != "X" ]; then
   echo "Installing dependencies: ${DEPENDENCIES}" >&2
   apt-get -f -qq -y install "${DEPENDENCIES}" >/dev/null 2>&1
 fi
-
-if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then REPO_VENDOR="microsoft"; fi;
-
-echo "Architecture detected as $ARCH...";
 
 if [ "${REPO_VENDOR}" = "headmelted" ]; then
   gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
@@ -59,7 +58,7 @@ echo "Installing [${REPO_VENDOR}] repository...";
 echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
   
 echo "Refreshing APT cache again..."
-if apt-get update -yq; then
+if apt-get -qq update; then
   echo "Repository install complete.";
 else
   echo "Repository install failed.";
@@ -67,7 +66,7 @@ else
 fi;
 
 echo "Installing Visual Studio Code from [${repo_name}]...";
-if apt-get install -t ${repo_name} -y ${code_executable_name}; then
+if apt-get install -t ${repo_name} -y -qq ${code_executable_name}; then
   echo "Visual Studio Code install complete.";
 else
   echo "Visual Studio Code install failed.";
@@ -75,7 +74,7 @@ else
 fi;
 
 echo "Installing any dependencies that may have been missed...";
-if apt-get install -y -f; then
+if apt-get install -y -qq -f; then
   echo "Missed dependency install complete.";
 else
   echo "Missed dependency install failed.";
