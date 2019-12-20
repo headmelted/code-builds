@@ -65,7 +65,7 @@ else
   exit 1;
 fi;
 
-echo "Installing Visual Studio Code from [${repo_name}]...";
+echo "Installing Visual Studio Code from [${repo_name}] (this may take several minutes)...";
 if apt-get install -t ${repo_name} -y -qq ${code_executable_name}; then
   echo "Visual Studio Code install complete.";
 else
