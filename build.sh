@@ -5,7 +5,7 @@ echo "Installing NVM and NodeJS";
 . ./setup_nvm.sh;
 
 echo "Retrieving latest Visual Studio Code sources into [code]";
-git clone "https://github.com/Microsoft/vscode.git" code;
+git clone --depth 1 "https://github.com/Microsoft/vscode.git" code;
   
 echo "Setting current owner as owner of code folder";
 chown ${USER:=$(/usr/bin/id -run)}:$USER -R code;
