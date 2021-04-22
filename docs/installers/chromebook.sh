@@ -63,8 +63,12 @@ echo "Architecture detected as $ARCHIE_ARCH...";
 
 echo "Preparing xenial chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;
-
-sudo sh ./crouton -t xiwi -n code-oss-chroot;
+if [ "$ARCH" = "arm64" ]; then
+  echo "Chroot will be created as armhf. This will be changed later when Electron introduces 64-bit ARM support...";
+  sudo sh ./crouton -t xiwi -a armhf -n code-oss-chroot;
+else
+  sudo sh ./crouton -t xiwi -n code-oss-chroot;
+fi;
 
 if [ $? -eq 0 ]; then
   echo "Crouton install script complete.";
